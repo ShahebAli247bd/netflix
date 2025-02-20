@@ -1,5 +1,6 @@
 import { User } from "../models/user.model.js";
 import bcrypt from "bcrypt";
+import { generateTonenAndSetCookie } from "./../lib/jwtToken.js";
 
 export const SingUp = async (req, res) => {
     try {
@@ -45,13 +46,14 @@ export const SingUp = async (req, res) => {
                 .json({ success: false, message: "Email already exists" });
         }
 
-        //create dummy image
-        const dummyImage = ["avater1.jpg", "avater2.jpg", "avater3.jpg"];
+        //create dummy image and add to the user Object as a dummy
+        const dummyImage = ["/avater1.jpg", "/avater2.jpg", "/avater3.jpg"];
         const image = dummyImage[Math.floor(Math.random() * dummyImage.length)];
 
         //hash password
         const salt = await bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(password, salt);
+
         //Create new User
         const newUser = new User({
             username,
@@ -59,6 +61,9 @@ export const SingUp = async (req, res) => {
             password: hashPassword,
             image,
         });
+        //Generate Token for Authentication
+        const token = generateTonenAndSetCookie(newUser._id, res);
+        console.log("JWT_TOKEN:" + token);
         //If new User Created then send response with new User details, keep password empty
         if (newUser) {
             await newUser.save();
