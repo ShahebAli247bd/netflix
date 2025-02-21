@@ -12,6 +12,13 @@ app.use(express.urlencoded({ extended: true }));
 
 const PORT = ENV_VARS.PORT;
 
+//Default Route
+app.get("/", (req, res) => {
+    res.send(
+        "<h1 style='text-align:center; height:100vh; align-items:center; display:flex; justify-content:center'>Welcome to Netflix API Backend</h1>"
+    );
+});
+
 //Auth Router used
 app.use("/api/v1/auth", AuthRouter);
 
