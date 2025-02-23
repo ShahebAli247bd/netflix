@@ -1,21 +1,21 @@
-import { fatchMovieApiFromTMDB } from "../services/tmdb.service.js";
+import { fetchMovieApiFromTMDB } from "../services/tmdb.service.js";
 import { ENV_VARS } from "./../config/envVars.js";
 
 /**
- * getTrendingMovie
+ * getMovieTrending
  * @param {Header Object} req
  * @param {Header Object} res
  * @return Trending Movie
  */
 export const getTrendingMovie = async (req, res) => {
     try {
-        const trendingMovie = await fatchMovieApiFromTMDB(
+        const trendingMovie = await fetchMovieApiFromTMDB(
             ENV_VARS.TMDB_BASE_URL + "/trending/movie/day?language=en-US"
         );
 
         const getOneTrendingMovie =
             trendingMovie.results[
-                Math.floor(Math.random() * data.results?.length)
+                Math.floor(Math.random() * trendingMovie?.results?.length)
             ];
 
         res.status(200).json({
@@ -34,10 +34,10 @@ export const getTrendingMovie = async (req, res) => {
  * @param {Header Object} res
  * @returns Movie trailer's by ID
  */
-export const getMovieTrailers = async (req, res) => {
+export const getMovieTrailersById = async (req, res) => {
     const { id } = req.params;
     try {
-        const data = await fatchMovieApiFromTMDB(
+        const data = await fetchMovieApiFromTMDB(
             ENV_VARS.TMDB_BASE_URL + `/movie/${id}/videos?language=en-US`
         );
         res.status(200).json({
@@ -60,15 +60,15 @@ export const getMovieTrailers = async (req, res) => {
  * @returns Movie Details by ID
  */
 
-export const getMovieDetails = async (req, res) => {
+export const getMovieDetailsById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const data = await fatchMovieApiFromTMDB(
+        const data = await fetchMovieApiFromTMDB(
             ENV_VARS.TMDB_BASE_URL + `/movie/${id}?language=en-us`
         );
-        console.log(ENV_VARS.TMDB_BASE_URL);
-        res.status(200).json({ success: true, details: data });
+
+        res.status(200).json({ success: true, content: data });
     } catch (error) {
         if (error.status == 404) {
             return res.status(404).send(null);
@@ -78,15 +78,15 @@ export const getMovieDetails = async (req, res) => {
 };
 
 /**
- * getSimilarMovie
+ * getMovieSimilar
  * @param {Header Object} req
  * @param {Header Object} res
  * @returns Similar Movie By ID
  */
-export const getSimilarMovie = async (req, res) => {
+export const getMovieSimilarById = async (req, res) => {
     const { id } = req.params;
     try {
-        const data = await fatchMovieApiFromTMDB(
+        const data = await fetchMovieApiFromTMDB(
             ENV_VARS.TMDB_BASE_URL + `/movie/${id}/similar?language=en-US`
         );
 
@@ -105,10 +105,10 @@ export const getSimilarMovie = async (req, res) => {
  * @param {header Object} res
  * @returns Movie by Category
  */
-export const getMovieByCategory = async (req, res) => {
+export const getMovieCategoryById = async (req, res) => {
     const { category } = req.params;
     try {
-        const data = await fatchMovieApiFromTMDB(
+        const data = await fetchMovieApiFromTMDB(
             ENV_VARS.TMDB_BASE_URL + `/movie/${category}?language=en-Us&page=1`
         );
         res.status(200).json({ success: true, category: data.results });

@@ -4,6 +4,7 @@ import { ENV_VARS } from "./config/envVars.js";
 import { connectDB } from "./config/db.js";
 import AuthRouters from "./routes/auth.route.js";
 import MovieRouters from "./routes/movie.route.js";
+import TVShowRouter from "./routes/tvshow.route.js";
 
 const app = express();
 
@@ -20,11 +21,14 @@ app.get("/", (req, res) => {
     );
 });
 
-//Auth Router used
+//Auth Router here
 app.use("/api/v1/auth", AuthRouters);
 
-//TMDB Movie Router used
+//TMDB Movie Router here
 app.use("/api/v1/movie", MovieRouters);
+
+//TMDB TVShow Router here
+app.use("/api/v1/tv", TVShowRouter);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

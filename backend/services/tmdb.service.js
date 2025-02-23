@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ENV_VARS } from "../config/envVars.js";
 
-export const fatchMovieApiFromTMDB = async (url) => {
+export const fetchMovieApiFromTMDB = async (url) => {
     const options = {
         headers: {
             accept: "application/json",
