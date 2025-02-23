@@ -5,6 +5,7 @@ import { connectDB } from "./config/db.js";
 import AuthRouters from "./routes/auth.route.js";
 import MovieRouters from "./routes/movie.route.js";
 import TVShowRouter from "./routes/tvshow.route.js";
+import { ProtectedRoute } from "./middleware/ProtectedRoute.js";
 
 const app = express();
 
@@ -25,10 +26,10 @@ app.get("/", (req, res) => {
 app.use("/api/v1/auth", AuthRouters);
 
 //TMDB Movie Router here
-app.use("/api/v1/movie", MovieRouters);
+app.use("/api/v1/movie", ProtectedRoute, MovieRouters);
 
 //TMDB TVShow Router here
-app.use("/api/v1/tv", TVShowRouter);
+app.use("/api/v1/tv", ProtectedRoute, TVShowRouter);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
